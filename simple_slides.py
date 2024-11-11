@@ -2,6 +2,7 @@ from llama_index.core import PromptTemplate
 from llama_index.llms.openai import OpenAI
 import re
 import os
+import json
 
 
 prompt = """
@@ -49,8 +50,7 @@ content_prompt = (
 
 api_key = os.getenv("OPENAI_API_KEY")
 llm = OpenAI(model="gpt-4o", api_key=api_key)
-completion = llm.complete(content_prompt, True)
-slides = completion.text
+slides = json.loads(llm.complete(content_prompt, True).text)
 
 
 powerpoint_prompt = """
@@ -61,6 +61,9 @@ But there is a catch: Instead of creating the presentation, provide python code
 that generates the PowerPoint presentation based on the provided slides.
 Use the package python-pptx to create the PowerPoint presentation.
 The presentation should be visually appealing and professionally designed.
+
+In your code, use a file called 'template.pptx' as the template for the presentation
+and stick to the template's design.
 
 If the slides content contains more than one information, make bullet points.
 Save the presentation as 'presentation.pptx'.
