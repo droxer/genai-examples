@@ -1,8 +1,10 @@
-from llama_index.core import PromptTemplate
-from llama_index.llms.openai import OpenAI
 import re
 import os
 import json
+
+from icecream import ic
+from llama_index.core import PromptTemplate
+from llama_index.llms.openai import OpenAI
 
 
 prompt = """
@@ -78,4 +80,6 @@ presentation_code = llm.complete(powerpoint_prompt + str(slides), True).text
 
 match = re.findall(r"python\n(.*?)\n```", presentation_code, re.DOTALL)
 python_code = match[0]
+
+ic(python_code)
 exec(python_code)
